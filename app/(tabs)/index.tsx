@@ -4,6 +4,7 @@ import ImageViewer from "@/Components/ImageViewer";
 import Button from "@/Components/Button";
 import IconButtons from "@/Components/IconButtons";
 import CircleButton from "@/Components/CircleButton";
+import EmojiPicker from "@/Components/EmojiPicker";
 import * as ImagePicker from 'expo-image-picker';
 import {useState} from 'react';
 
@@ -13,7 +14,8 @@ const image = require('../../assets/images/background-image.png');
 
 export default function Index() {
   const [imageUri, setImageUri] = useState<string | undefined>(undefined);
-  const [showAppOptions, setShowAppOptions] = useState(false);
+  const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
 
   const pickImage = async () => {
     let imagePicked = await ImagePicker.launchImageLibraryAsync({
@@ -36,7 +38,13 @@ export default function Index() {
     setShowAppOptions(false);
   }
 
-  const onAddSticker = () => {}
+  const onAddSticker = () => {
+    setShowEmojiPicker(true);
+  }
+
+  const onClose = () => {
+    setShowEmojiPicker(false);
+  }
 
   const onSaveImage = () => {}
   return (
@@ -59,6 +67,11 @@ export default function Index() {
       </View>
       )
 }
+      {showEmojiPicker && (
+        <EmojiPicker onClose={onClose} isVisible={showEmojiPicker}>
+
+        </EmojiPicker>
+      )}
     </View>
   );
 }
