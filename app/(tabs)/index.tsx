@@ -1,13 +1,17 @@
 import { Text, View, StyleSheet, ImageSourcePropType } from "react-native";
 import {Link} from "expo-router";
+import * as ImagePicker from 'expo-image-picker';
+import {useState} from 'react';
+
+
+
 import ImageViewer from "@/Components/ImageViewer";
 import Button from "@/Components/Button";
 import IconButtons from "@/Components/IconButtons";
 import CircleButton from "@/Components/CircleButton";
 import EmojiPicker from "@/Components/EmojiPicker";
 import EmojiList from "@/Components/EmojiList";
-import * as ImagePicker from 'expo-image-picker';
-import {useState} from 'react';
+import EmojiSticker from "@/Components/EmojiSticker";
 
 
 
@@ -53,6 +57,7 @@ export default function Index() {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <ImageViewer imageSource={image} selectedImage={imageUri} />
+        {selectedEmoji ? <EmojiSticker imageSource={selectedEmoji} imageSize={40} /> : null}
       </View>
       {showAppOptions?(
         <View style={styles.optionsContainer}>
