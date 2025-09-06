@@ -4,13 +4,16 @@ import { Image } from 'expo-image';
 
 type Props = {
   imageSource: ImageSourcePropType;
+  selectedImage? : string;
 };
 
-export default function ImageViewer({ imageSource }: Props) {
+export default function ImageViewer({ imageSource, selectedImage }: Props) {
+
+  const image = selectedImage ? { uri: selectedImage } : imageSource;
   return (
     <View>
       <Text>ImageViewer</Text>
-      <Image source={imageSource} style={styles.image} />
+      <Image source={image} style={styles.image} />
     </View>
   )
 }

@@ -2,13 +2,18 @@ import { Text, View, StyleSheet } from "react-native";
 import {Link} from "expo-router";
 import ImageViewer from "@/Components/ImageViewer";
 import Button from "@/Components/Button";
+import IconButtons from "@/Components/IconButtons";
+import CircleButton from "@/Components/CircleButton";
 import * as ImagePicker from 'expo-image-picker';
+import {useState} from 'react';
 
 
 
 const image = require('../../assets/images/background-image.png');
 
 export default function Index() {
+  const [imageUri, setImageUri] = useState<string | undefined>(undefined);
+  const [showAppOptions, setShowAppOptions] = useState(false);
 
   const pickImage = async () => {
     let imagePicked = await ImagePicker.launchImageLibraryAsync({
@@ -18,21 +23,42 @@ export default function Index() {
     })
 
     if (!imagePicked.canceled) {
-      console.log(imagePicked);
+      setImageUri(imagePicked.assets[0].uri);
+      setShowAppOptions(true);
     }else {
       console.log('User cancelled the image picker');
     }
   }
+
+
+
+  const reset = () => {
+    setShowAppOptions(false);
+  }
+
+  const onAddSticker = () => {}
+
+  const onSaveImage = () => {}
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <ImageViewer imageSource={image} />
+        <ImageViewer imageSource={image} selectedImage={imageUri} />
       </View>
+      {showAppOptions?(
+        <View style={styles.optionsContainer}>
+          <View style={styles.optionsRow}>
+            <IconButtons icon="refresh" label="Reset" onPress={reset} />
+            <CircleButton onPress={onAddSticker} />
+            <IconButtons icon="save" label="Save" onPress={onSaveImage} />
+          </View>
+        </View>
+      ):(
       <View style={styles.footerContainer}>
          <Button theme="primary" label="Choose Photo" onPress={pickImage} />
-          <Button label="Use this Photo" />
+          <Button label="Use this Photo" onPress={() => {setShowAppOptions(true)}} />
       </View>
-     
+      )
+}
     </View>
   );
 }
@@ -51,7 +77,19 @@ const styles = StyleSheet.create({
     borderRadius: 18,
   },
   footerContainer: {
-    flex: 2 / 3,
+    flex: 1.5 / 3,
     alignItems: 'center',
+  },
+
+  optionsContainer: {
+    flex: 1.5/3,
+    width: '100%',
+    alignItems: 'center',
+  },
+  optionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
   },
 });
